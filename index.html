@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Animation maker</title>
+
+		<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link rel="stylesheet/less" href="css/index.less">
+		<link rel="stylesheet" href="lib/codemirror/css/codemirror.css">
+		<link rel="stylesheet" href="lib/codemirror/css/dialog.css">
+		<link rel="stylesheet" href="lib/codemirror/css/foldgutter.css">
+		<link rel="stylesheet" href="lib/codemirror/css/monokai.css">
+		<script src="js/less-1.7.1.min.js"></script>
+	</head>
+	<body class="body">
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button> -->
+			<a class="navbar-brand" href="#">Animation Maker</a>
+			</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" id="tutorial_btn">向导</a></li>
+					<li><a href="#" id="documentation_btn">API文档</a></li>
+					<!-- <li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">Action</a></li>
+							<li><a href="#">Another action</a></li>
+							<li><a href="#">Something else here</a></li>
+							<li class="divider"></li>
+							<li><a href="#">Separated link</a></li>
+						</ul>
+					</li> -->
+				</ul>
+			</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+		<div class="container-fluid main">
+			<div class="row">
+				<div class="col-md-8 row-left">
+					<span class="glyphicon glyphicon-chevron-right" id="hide_btn"></span>
+					<div id="codemirror" class="clearfix">
+						<h3 class="title">编写你的动画</h3>
+
+						<div class="addAnimationList">
+							<form class="form-inline" role="form">
+								<div class="form-group">
+									<!-- <label class="sr-only">Email</label> -->
+									<p class="form-control-static">保存你的动画</p>
+								</div>
+								<div class="form-group select">
+									<select class="form-control" id="animation_select">
+									</select>
+								</div>
+								<div class="form-group btns">
+									<span class="glyphicon glyphicon-plus"></span>
+									<span class="glyphicon glyphicon-minus"></span>
+									<span class="glyphicon glyphicon-edit"></span>
+								</div>
+								<!-- <div class="form-group">
+									<input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+								</div>
+								<button type="submit" class="btn btn-default">Confirm identity</button> -->
+							</form>
+							<small class="muted">支持部分Sublime快捷键</small>
+						</div>
+					</div>
+					<div class="btn-container">
+						<button class="btn btn-default" id="run_btn">运行</button>
+						<!-- <button class="btn btn-default" id="run_all_btn">运行所有动画</button> -->
+						<button class="btn btn-default" id="clear_btn">清除所有动画</button>
+						<p class="text-muted" id="running_info"></p>
+					</div>
+					<div id="keyframe_output">
+						<h3 class="title">生成的Keyframes</h3>
+					</div>
+				</div>
+				<div class="col-md-4 row-right">
+					<header class="main-header">
+						<div class="row">
+							<button type="submit" class="btn btn-default col-md-2" id="header_url_btn">GO!</button>
+							<div class="form-group col-md-9">
+								<div class="input-group">
+									<div class="input-group-addon">http://</div>
+									<input class="form-control " type="text" placeholder="Input your website's URL here..."  id="header_url">
+								</div>
+							</div>
+							<!-- <input type="text" class="form-control col-md-10" placeholder=""> -->
+						</div>
+					</header>
+					<div class="iframe-container"></div>
+				</div>
+			</div>
+		</div>
+		<footer class="footer clearfix">
+			<p class="footer-info"> 2014 <a href="http://xiaoyuze.com"> Xiao Yuze </a> . Powered by <a href="http://getbootstrap.com">Bootstrap 3.2.0、</a><a href="http://codemirror.net">Codemirror</a></p>
+		</footer>
+		<!-- dialog documentation -->
+		<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="documentation">	
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="myModalLabel">API文档</h4>
+					</div>
+					<div class="modal-body">
+						<h3>Animation方法的构造函数</h3>
+						<p>你可以直接使用:</p>
+						<pre>new Animation(config)</pre>
+						<p>或者</p>
+						<pre>$(selector).newAnimation(config)</pre>
+						<p>来初始化Animation动画，他们是等价的。该方法返回一个新的Animation对象实例。</p>
+<pre>
+Animation方法接收一个config对象，为初始化参数，config具体参数如下:
+
+animationName : (必须) 字符串，为你需要生成的keyframes的名称,将生成如`@keyframes yourName` 的keyframes
+
+prefix : (可选)数组，包含你所需要的浏览器前缀，默认为['-webkit-'],将自动生成带浏览器前缀与W3C标准的keyframes与animation
+
+useTranslate3d : Boolean, 默认为false,当需要使用translate3d时，将此值设置为true
+
+animationDelay : (可选) Number, 为animation的delay
+
+animationTimeFunction : (可选) String, 为animation的time function ,默认'linear',所有有效接收的参数用法参照W3C标准
+
+animationRepeat : (可选),用法同W3C标准的animationRepeat,可输入次数或者'infinite'
+
+animationDirection : (可选)用法同W3C标准
+animationFillMode : (可选)用法同W3C标准
+
+</pre>
+<h3>Animation对象的方法:</h3>
+<h4>Animation.startWith(action) , 设置动画0%时的状态，接收一个action参数，为一个对象，</h4>
+<pre>
+startWith(action)
+
+该方法放回Animation对象本身，支持链式调用
+
+action对象代表着你的动画每一帧设置的各种css属性:
+
+top/left/right/bottom/margin/margin-*/padding/padding-*/width/height:
+
+上述属性可以不输入单位,直接使用,如:
+
+top : 100
+
+默认单位为px,你也可以输入其他单位如:
+
+top : '10%'或者top : '10rem'
+
+对于transform的tranlate、scale、rotate、skew,使用如下:
+
+rotate : `Number`, （Number类型）仅支持单位deg
+skew : `Number`, (Number类型)同上，仅支持单位deg
+scale : `Number`, (Number类型),用法同W3C标准
+
+translate : {   translate 接收一个对象，x、y分别代表tranlate的第一、第二个参数，x、y都为Number类型,默认且仅支持单位px
+	x : `Number`,
+	y : `Number`
+}
+
+对于其他属性，请保证animation keyframes语法支持并且key-value对符合标准，我们将把您的key-value对以
+
+key : value 的形式直接写入keyframe中
+
+</pre>
+<h4>Animation.to(action,duration) , 该方法应紧跟着startWith()方法调用，用以指定下一帧的动作</h4>
+<pre>
+Animation.to(action,duration) , 接收两个参数，其中第一个参数action同startWith方法中的action参数，
+
+第二个参数duration，Number类型，必选，单位毫秒ms，指定该帧数动画的执行时间.
+
+比如你想0.5秒内将left属性移动到100px的位置：
+
+.to({
+	left : 100
+},500)
+
+具体执行的帧数百分比我们将根据您所有动画的执行时间来计算得到。
+
+</pre>
+<h4>Animation.wait(delayTime),用于设置上一帧动画停留多少毫秒</h4>
+<pre>
+	接收一个参数delayTime,Number类型，单位毫秒，用于设置动画将在上一帧停留多久
+</pre>
+<h4>Anmation.start(),在动画的末尾，执行start方法，表示动画到此结束</h4>
+<pre>
+该方法不接受参数，应在动画链的最后执行该方法。
+
+</pre>
+<h4>用例:</h4>
+<pre>
+假设现在有这么一个动画，起始帧时top为0px,然后在1秒内移动到top:100px,在该帧停留0.5秒后在两秒内移动到top:200px。
+
+写法如下:
+new Animation({
+  animationName : 'testlight',
+  prefix : ['-webkit-']
+})
+.startWith({
+  top : 0
+})
+.to({
+  top : 100
+},1000)
+.wait(500)
+.to({
+  top : 200
+},2000)
+.start();
+
+执行结果:
+
+-webkit-animation : testlight 2.5s;
+animation : testlight 2.5s;
+
+@-webkit-keyframes testlight {
+	0% {
+		-webkit-transform : translate(0px,0px) rotate(0deg);
+		transform : translate(0px,0px) rotate(0deg);
+	}
+	20% {
+		-webkit-transform : translate(0px,0px) rotate(0deg);
+		transform : translate(0px,0px) rotate(0deg);
+	}
+	100% {
+		-webkit-transform : translate(100px,150px) rotate(360deg);
+		transform : translate(100px,150px) rotate(360deg);
+	}
+
+}
+
+@keyframes testlight {
+	0% {
+		transform : translate(0px,0px) rotate(0deg);
+	}
+	20% {
+		transform : translate(0px,0px) rotate(0deg);
+	}
+	100% {
+		transform : translate(100px,150px) rotate(360deg);
+	}
+}
+
+根据每一步动作设置的时间，得到总动画时间为2.5秒,其中每一个动作所占的帧数百分比都已经计算完成，您需要做的仅是复制粘贴。
+</pre>
+<p class="text-warning">如果您需要使用实时查看动画的功能，请从<a href="">github</a>下载该站的源码并布置在您的本地，因为跨域限制，不同域无法通过JS修改iframe中的style</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+<!-- dialog Tutorial -->
+		<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="tutorial">	
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						<h4 class="modal-title" id="myModalLabel">向导</h4>
+					</div>
+					<div class="modal-body">
+						<h3>用法:</h3>
+						<h4>基本</h4>
+						<p>最简单的，你可以这样直接生成你需要的keyframes:</p>
+<pre>
+
+new Animation({
+	animationName : 'test',
+	animationRepeat : 'infinite',
+	prefix : ['-webkit-']
+})
+.startWith({
+	translate : {
+		y : 0
+	}
+})
+.to({
+	translate : {
+		y : 5
+	}
+},500)
+.to({
+	translate : {
+		y : 0
+	}
+},500)
+.start();
+
+</pre>
+<p>Then you'll get your what you need like:</p>
+<pre>
+-webkit-animation : test 1s infinite;
+animation : test 1s infinite;
+@-webkit-keyframes test {
+	0% {
+		-webkit-transform : translate(0px,0px);
+		transform : translate(0px,0px);
+	}
+	50% {
+		-webkit-transform : translate(0px,5px);
+		transform : translate(0px,5px);
+	}
+	100% {
+		-webkit-transform : translate(0px,0px);
+		transform : translate(0px,0px);
+	}
+
+}
+
+@keyframes test {
+	0% {
+		transform : translate(0px,0px);
+	}
+	50% {
+		transform : translate(0px,5px);
+	}
+	100% {
+		transform : translate(0px,0px);
+	}
+
+}
+
+</pre>
+
+<p>现在就尝试吧！把第一段代码复制到`编写动画`输入框，然后点击`运行`查看你的keyframes吧。</p>
+
+<h4>进阶</h4>
+
+<p>你可以打开一个本地网站，然后一边看效果一边调试你的动画。</p>
+<p>在网址输入栏输入你的本地网站(由于跨域限制，仅限本地网站)，当提示显示iframe onload后，像这样编写你的代码然后运行:</p>
+<pre>
+下面代码中的`iframe`指向着你iframe的document，这样jQuery查找器将以iframe中的document为上下文来查询你的元素，`.guy-2 .foot-l`是你iframe中需要施加动画的元素的选择器，关于函数的详细参数请查看API文档
+
+$('.guy-2 .foot-l',iframe).newAnimation({
+    animationName : 'test', 
+    animationRepeat : 'infinite',
+    prefix : ['-webkit-']
+})
+.startWith({
+    translate : {
+        y : 0
+    }
+})
+.to({
+    translate : {
+        y : 5
+    }
+},500)
+.to({
+    translate : {
+        y : 0
+    }
+},500)
+.start();
+
+</pre>
+
+<p>如果你的iframe已经成功打开并onload，且选择器能正确查找到你的元素并且所有代码都是正确的，你应该可以查看到你的动画效果了！</p>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<script src="js/requireJS.min.js" data-main="js/index"></script>
+  </body>
+</html>
