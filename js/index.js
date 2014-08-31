@@ -118,6 +118,7 @@ require(['jquery','codemirror','iframe_onload','jquery.bootstrap',"animation"],f
 					src : url,
 					class : 'iframe'
 				},function(){
+					$("#clear_btn").css({display : "inline-block"});
 					window._showInfo("Iframe 已经onload,你可以执行你的代码了!",'success');
 					if($(".close-btn").length == 0) {
 						$(".iframe-container").append('<span class="glyphicon glyphicon-remove close-btn"></span>');
