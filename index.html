@@ -27,11 +27,12 @@
 					<span class="icon-bar"></span>
 				</button> -->
 			<a class="navbar-brand" href="#">Animation Maker</a>
+			<p class="navbar-text">帮助你几行代码生成繁琐的CSS3 animation keyframes!</p>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav navbar-left">
+				<ul class="nav navbar-nav navbar-right">
 					<li><a href="#" id="tutorial_btn">向导</a></li>
 					<li><a href="#" id="documentation_btn">API文档</a></li>
 					<!-- <li class="dropdown">
@@ -106,7 +107,11 @@
 			</div>
 		</div>
 		<footer class="footer clearfix">
+			<div class="footer-warpper">
+			<p class="text-warning footer-info">开发时间仓促,现在仅仅是个DEMO，如果你发现bug或者对使用有任何疑问，请联系我:xiaoyuze88@gmail.com</p>
+<p class="text-muted footer-info">该网站的源码已发布在<a href="">github</a>上，遵循<a href="https://github.com/xiaoyuze88/animationMaker/blob/master/LICENSE">MIT协议</a>，你可以随意复制、修改、发布源码，但请保留我的原作信息!</p>
 			<p class="footer-info"> 2014 <a href="http://xiaoyuze.com"> Xiao Yuze </a> . Powered by <a href="http://getbootstrap.com">Bootstrap 3.2.0、</a><a href="http://codemirror.net">Codemirror</a></p>
+			</div>
 		</footer>
 		<!-- dialog documentation -->
 		<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="documentation">	
@@ -257,7 +262,7 @@ animation : testlight 2.5s;
 
 根据每一步动作设置的时间，得到总动画时间为2.5秒,其中每一个动作所占的帧数百分比都已经计算完成，您需要做的仅是复制粘贴。
 </pre>
-<p class="text-warning">如果您需要使用实时查看动画的功能，请从<a href="">github</a>下载该站的源码并布置在您的本地，因为跨域限制，不同域无法通过JS修改iframe中的style</p>
+<p class="text-warning">如果您需要使用实时查看动画的功能，请从<a href="">github</a>下载该站的源码并布置在您的本地，因为跨域限制，不同域无法通过JS修改iframe中的style。</p>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
