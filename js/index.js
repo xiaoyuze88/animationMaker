@@ -181,7 +181,7 @@ require(['jquery','codemirror','iframe_onload','jquery.bootstrap',"animation"],f
 					localStorage.setItem(_CACHE_STR,newName);
 					setItem(newName,'');
 				}
-				window.input.setValue('');
+				// window.input.setValue('');
 				window.input.focus();
 				
 			} else {
@@ -488,6 +488,9 @@ require(['jquery','codemirror','iframe_onload','jquery.bootstrap',"animation"],f
 				autoSave();
 				window._showInfo("保存成功!",'success');
 			}
+			// CodeMirror.commands[map[ctrl + "n"] = "newAnimation"] = function(cm) {
+			// 	$(".addAnimationList .glyphicon-plus").trigger("click");
+			// }
 			CodeMirror.commands[map[ctrl + "/"] = "comment"] = CodeMirror.commands.toggleComment
 		})();
 	})
