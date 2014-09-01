@@ -320,7 +320,7 @@ require(['jquery','codemirror','iframe_onload','jquery.bootstrap',"animation"],f
 				setTimeout(function(){
 					window[nowName].$dom.attr('style','');
 					setTimeout(function(){
-						window[nowName].$dom.attr('style','-webkit-animation : ' + window[nowName].animationString);
+						window[nowName].$dom.attr('style',window[nowName].animationString);
 					})
 				},0);
 
